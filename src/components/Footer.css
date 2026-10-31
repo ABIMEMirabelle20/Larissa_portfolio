@@ -1,0 +1,79 @@
+.footer {
+  position: relative;
+  z-index: 1;
+  --wave-h: clamp(48px, 8vw, 96px);
+  padding-block: var(--space-xl) var(--space-lg);
+}
+
+/* ---------- Vagues : trois nappes aux couleurs de la palette ---------- */
+.footer__waves {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 100%;
+  height: var(--wave-h);
+  overflow: hidden;
+  pointer-events: none;
+}
+.footer__wave { position: absolute; inset: 0; animation: footerBob 6s ease-in-out infinite; }
+.footer__wave svg {
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 200%; max-width: none; height: 100%;
+  animation: footerDrift 24s linear infinite;
+}
+.footer__wave--1 { animation-duration: 7s; }
+.footer__wave--1 svg { fill: var(--pink); opacity: 0.3; animation-duration: 38s; }
+.footer__wave--2 { animation-duration: 5s; animation-delay: -2s; }
+.footer__wave--2 svg { fill: var(--lemon); opacity: 0.16; animation-duration: 26s; animation-direction: reverse; }
+/* Premier plan : exactement la couleur du pied de page, donc sans couture. */
+.footer__wave--3 { animation-duration: 8s; animation-delay: -4s; }
+.footer__wave--3 svg { fill: var(--plum); opacity: 1; animation-duration: 18s; }
+
+@keyframes footerDrift { to { transform: translateX(-50%); } }
+@keyframes footerBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+/* ---------- Contenu ---------- */
+.footer__top-row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-md); }
+.footer__name { font-family: var(--font-display); font-size: clamp(2.4rem, 7vw, 5rem); line-height: 1; letter-spacing: -0.03em; }
+.footer__tagline { margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+.footer__socials { display: flex; gap: 0.7rem; padding-bottom: 0.4rem; }
+.footer__social {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3rem; height: 3rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+}
+.footer__social:hover { background: var(--lemon); color: var(--plum); border-color: var(--lemon); }
+
+/* Ondulation au survol : un anneau grandit puis s'efface, comme une goutte. */
+.footer__social::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--lemon);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .footer__social:hover::after, .footer__social:focus-visible::after { animation: footerRipple 0.9s ease-out; }
+}
+@keyframes footerRipple { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2.1); opacity: 0; } }
+
+.footer__bottom {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm);
+  margin-top: var(--space-lg); padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-small); color: var(--muted);
+}
+.footer__actions { display: flex; flex-wrap: wrap; gap: var(--space-md); }
+.footer__action { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); text-decoration: underline; text-underline-offset: 0.3em; }
+.footer__action:hover { color: var(--lemon); }
+
+@media (prefers-reduced-motion: reduce) {
+  .footer__wave, .footer__wave svg, .footer__social::after { animation: none; }
+}

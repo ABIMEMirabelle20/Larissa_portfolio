@@ -1,0 +1,113 @@
+.about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+}
+
+/* ---------- Photo : forme organique qui se déforme, anneau qui tourne ---------- */
+.about__visual {
+  position: relative;
+  width: min(100%, 440px);
+  aspect-ratio: 1;
+  justify-self: center;
+}
+.about__frame {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: var(--pink);
+  border-radius: var(--radius-blob);
+  animation: aboutMorph 12s ease-in-out infinite;
+}
+.about__photo { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+
+.about__placeholder {
+  height: 100%;
+  display: grid;
+  place-content: center;
+  gap: 0.6rem;
+  text-align: center;
+  color: var(--plum);
+}
+.about__initials { font-family: var(--font-display); font-size: clamp(4rem, 12vw, 7rem); line-height: 1; }
+.about__placeholder-note { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.about__ring {
+  position: absolute;
+  inset: -14px;
+  z-index: 2;
+  border: 2px solid transparent;
+  border-top-color: var(--lemon);
+  border-right-color: color-mix(in srgb, var(--lemon) 35%, transparent);
+  border-radius: var(--radius-blob);
+  pointer-events: none;
+  animation: aboutTurn 20s linear infinite, aboutMorph 16s ease-in-out infinite reverse;
+}
+
+@keyframes aboutTurn { to { transform: rotate(360deg); } }
+@keyframes aboutMorph {
+  0%, 100% { border-radius: 42% 58% 64% 36% / 46% 40% 60% 54%; }
+  25%      { border-radius: 58% 42% 38% 62% / 56% 58% 42% 44%; }
+  50%      { border-radius: 36% 64% 52% 48% / 62% 38% 62% 38%; }
+  75%      { border-radius: 64% 36% 46% 54% / 40% 60% 40% 60%; }
+}
+
+/* ---------- Texte ---------- */
+.about__lead { margin-top: var(--space-md); }
+.about__text { margin-top: var(--space-sm); max-width: 60ch; color: var(--muted); }
+
+.about__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--space-md);
+  margin-top: var(--space-lg);
+}
+.about__fact { padding-block: 0.9rem; border-top: 1px solid var(--line); }
+.about__fact dt { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.about__fact dd { margin-top: 0.2rem; font-weight: 500; }
+
+/* ---------- Deux terrains ---------- */
+.about__terrains { margin-top: clamp(3rem, 7vw, 6rem); }
+.about__terrains-title { max-width: 18ch; }
+.about__terrain-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); margin-top: var(--space-lg); }
+.about__terrain {
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+}
+.about__terrain h4 {
+  margin: 0 0 var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.about__terrain li {
+  position: relative;
+  padding: 0.7rem 0 0.7rem 1.5rem;
+  border-top: 1px solid var(--line);
+}
+.about__terrain li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 1.25rem;
+  width: 0.6rem; height: 0.6rem;
+  background: var(--lemon);
+  border-radius: 50%;
+}
+
+@media (max-width: 860px) {
+  .about__grid { grid-template-columns: 1fr; }
+  .about__visual { width: min(78%, 360px); }
+  .about__terrain-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .about__facts { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about__frame, .about__ring { animation: none; }
+}

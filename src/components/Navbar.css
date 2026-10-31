@@ -1,0 +1,140 @@
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  height: var(--nav-h);
+  background: var(--bg);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-med) var(--ease);
+}
+.nav.is-scrolled { border-bottom-color: var(--line); }
+
+.nav__inner {
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+/* ---------- Marque : nœud papillon + signature ---------- */
+.nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.05rem;
+  text-decoration: none;
+  position: relative;
+  z-index: 2;
+}
+.nav__bow { width: 2.1rem; height: auto; overflow: visible; transition: transform 0.45s var(--ease); }
+.nav__bow path, .nav__bow rect { fill: var(--lemon); stroke: var(--plum); stroke-width: 2.2; stroke-linejoin: round; }
+.nav__brand:hover .nav__bow { transform: rotate(-12deg) scale(1.08); }
+
+/* ---------- Liens ---------- */
+.nav__links { display: flex; align-items: center; gap: clamp(1rem, 2.2vw, 2rem); }
+/* Soulignement citron : se trace au survol, reste en place sur la section active. */
+.nav__link {
+  position: relative;
+  padding-block: 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--muted);
+  transition: color var(--dur-fast) var(--ease);
+}
+.nav__link::after {
+  content: '';
+  position: absolute;
+  left: -0.15rem; right: -0.15rem; bottom: -1px;
+  height: 0.45rem;
+  background: var(--lemon);
+  border-radius: 2px;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-med) var(--ease);
+}
+.nav__link:hover, .nav__link.is-active { color: var(--fg); }
+.nav__link:hover::after, .nav__link.is-active::after { transform: scaleX(1); }
+
+/* ---------- Outils ---------- */
+.nav__tools { display: flex; align-items: center; gap: 0.5rem; position: relative; z-index: 2; }
+.nav__tool {
+  display: grid;
+  place-items: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding-inline: 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+}
+.nav__tool:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+/* ---------- Burger ---------- */
+.nav__burger {
+  display: none;
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.nav__burger span {
+  position: absolute;
+  left: 50%;
+  width: 1.1rem;
+  height: 2px;
+  margin-left: -0.55rem;
+  background: currentColor;
+  transition: transform var(--dur-med) var(--ease);
+}
+.nav__burger span:nth-child(1) { top: calc(50% - 4px); }
+.nav__burger span:nth-child(2) { top: calc(50% + 2px); }
+.nav.is-open .nav__burger span:nth-child(1) { transform: translateY(3px) rotate(45deg); }
+.nav.is-open .nav__burger span:nth-child(2) { transform: translateY(-3px) rotate(-45deg); }
+
+/* ---------- Menu mobile : plein écran bordeaux ---------- */
+.nav__mobile {
+  position: fixed;
+  inset: 0;
+  padding-top: var(--nav-h);
+  visibility: hidden;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.55s var(--ease-in-out), visibility 0s linear 0.55s;
+  overflow-y: auto;
+}
+.nav.is-open .nav__mobile {
+  visibility: visible;
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 0.55s var(--ease-in-out);
+}
+.nav__mobile-inner { display: grid; gap: 0.25rem; padding-block: var(--space-lg); }
+.nav__mobile-link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.6rem;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 9vw, 3.2rem);
+  line-height: 1.1;
+  text-decoration: none;
+}
+.nav__mobile-link:hover { color: var(--lemon); }
+.nav__mobile-index { font-family: var(--font-mono); font-size: 0.8rem; color: var(--pink); }
+
+/* Sur le menu ouvert, la marque et les boutons doivent rester lisibles. */
+.nav.is-open { background: var(--wine); color: var(--ivory); --focus: var(--lemon); --line: color-mix(in srgb, var(--ivory) 30%, transparent); --fg: var(--ivory); --bg: var(--wine); --muted: var(--ivory); }
+
+@media (max-width: 1100px) {
+  .nav .nav__links, .nav .nav__cta { display: none; }
+  .nav .nav__burger { display: block; }
+}
+@media (max-width: 380px) {
+  .nav__bow { display: none; }
+}

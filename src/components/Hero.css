@@ -1,0 +1,177 @@
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(2rem, 5vw, 4rem);
+  padding-top: calc(var(--nav-h) + clamp(2rem, 4vw, 3.5rem));
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  overflow: hidden;
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+}
+
+/* ---------- Accroche : trois mots, trois traitements ---------- */
+.hero__hook {
+  display: grid;
+  font-size: clamp(2.9rem, 6.6vw, 6.8rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  max-width: none;
+}
+.hero__line { display: block; padding-block: 0.04em; }
+.hero__line--solid { color: var(--accent); }
+.hero__line--outline { color: transparent; -webkit-text-stroke: 2px var(--fg); }
+.hero__hook .mark { padding-inline: 0.18em; margin-inline: -0.18em; }
+
+.hero__deck { margin-top: var(--space-md); max-width: 50ch; font-size: clamp(1.05rem, 1.5vw, 1.25rem); }
+.hero__cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); margin-top: var(--space-md); }
+
+.hero__link {
+  position: relative;
+  padding-block: 0.3rem;
+  font-weight: 700;
+  text-decoration: none;
+  z-index: 0;
+}
+.hero__link::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 0.5rem;
+  background: var(--lemon);
+  z-index: -1;
+  transform-origin: left;
+  transition: transform var(--dur-med) var(--ease);
+}
+.hero__link:hover::after { transform: scaleY(1.6); }
+
+/* ---------- Scène : forme bordeaux, mascotte, pastilles ---------- */
+.hero__stage { position: relative; width: 100%; max-width: 520px; justify-self: end; aspect-ratio: 1 / 1.08; }
+
+.hero__blob {
+  position: absolute;
+  inset: 3% 0 0 5%;
+  overflow: hidden; /* la mascotte est découpée par la forme */
+  background: var(--wine);
+  border-radius: var(--radius-blob);
+  animation: heroBlob 14s ease-in-out infinite;
+}
+
+.hero__mascot { position: absolute; left: 50%; bottom: 0; width: 78%; transform: translateX(-50%); }
+
+/* Pastille ronde : texte qui tourne autour d'un ×. */
+.hero__badge {
+  position: absolute;
+  top: -3%;
+  left: -5%;
+  width: 24%;
+  animation: heroSpin 28s linear infinite;
+}
+.hero__badge-bg { fill: var(--lemon); stroke: var(--plum); stroke-width: 2; }
+.hero__badge-text { fill: var(--plum); font-family: var(--font-body); font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.hero__badge-x { stroke: var(--plum); stroke-width: 3.4; stroke-linecap: round; fill: none; }
+
+/* Chiffres : de petites étiquettes collées autour de la mascotte. */
+.hero__stamps { list-style: none; margin: 0; padding: 0; }
+.stamp {
+  position: absolute;
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.7rem 1.1rem;
+  border: 2px solid var(--plum);
+  border-radius: var(--radius-md);
+  color: var(--plum);
+  line-height: 1.1;
+}
+.stamp--pink { background: var(--pink); }
+.stamp--lemon { background: var(--lemon); }
+.stamp--ivory { background: var(--ivory); }
+.stamp__value { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.5rem); }
+.stamp__label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.stamp:nth-child(1) { left: -9%; bottom: 30%; transform: rotate(-5deg); }
+.stamp:nth-child(2) { right: -5%; top: 26%; transform: rotate(4deg); }
+.stamp:nth-child(3) { left: 4%; bottom: -3%; transform: rotate(-2deg); }
+
+/* ---------- Signature WEB × IA, sur une ligne ---------- */
+.hero__lockup { width: 100%; }
+.lockup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.12em;
+  margin: 0;
+  font-size: clamp(2.6rem, 15.5vw, 12.5rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+.lockup__web {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+.lockup__x {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 0.78em;
+  height: 0.78em;
+  border-radius: 50%;
+  background: var(--lemon);
+  border: 0.03em solid var(--plum);
+  color: var(--plum);
+}
+.lockup__x svg { width: 46%; height: 46%; }
+
+.lockup__ia {
+  position: relative;
+  z-index: 0;
+  padding: 0.06em 0.3em 0.1em;
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  color: var(--plum);
+}
+.lockup__ia::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--pink);
+  border-radius: var(--radius-blob);
+  animation: heroBlob 14s ease-in-out infinite;
+}
+/* Petit point citron, écho du point de la signature. */
+.lockup__ia::after {
+  content: '';
+  position: absolute;
+  top: -0.02em;
+  right: -0.04em;
+  width: 0.2em;
+  height: 0.2em;
+  border-radius: 50%;
+  background: var(--lemon);
+  border: 0.02em solid var(--plum);
+}
+
+@keyframes heroBlob {
+  0%, 100% { border-radius: 42% 58% 64% 36% / 46% 40% 60% 54%; }
+  33% { border-radius: 58% 42% 40% 60% / 56% 58% 42% 44%; }
+  66% { border-radius: 36% 64% 54% 46% / 62% 38% 62% 38%; }
+}
+@keyframes heroSpin { to { transform: rotate(360deg); } }
+
+@media (max-width: 900px) {
+  .hero__grid { grid-template-columns: 1fr; }
+  .hero__stage { justify-self: center; max-width: 400px; margin-top: var(--space-md); }
+  .stamp:nth-child(1) { left: -2%; }
+  .stamp:nth-child(2) { right: -2%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__blob, .hero__badge, .lockup__ia::before { animation: none; }
+}

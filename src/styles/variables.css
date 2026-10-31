@@ -1,0 +1,125 @@
+/* =====================================================================
+   IDENTITÉ VISUELLE
+   Cinq couleurs, pas une de plus. Tout le reste est un mélange de ces
+   cinq-là (color-mix), jamais une teinte nouvelle.
+
+   - Bordeaux et prune : la profondeur, le caractère.
+   - Ivoire : la lecture, l'élégance (le "papier" du site).
+   - Rose poudré : la touche artistique.
+   - Jaune citron : l'accent. Rare, donc visible : surlignages, pastilles,
+     boutons d'attention. Jamais en texte sur fond ivoire (illisible).
+   ===================================================================== */
+
+:root {
+  --wine: #581C35;
+  --pink: #F4C2D7;
+  --lemon: #E8FF54;
+  --ivory: #FFF9F0;
+  --plum: #24131F;
+
+  /* ----- Rôles (thème clair par défaut : papier ivoire) ----- */
+  --bg: var(--ivory);
+  --fg: var(--plum);
+  --muted: color-mix(in srgb, var(--plum) 72%, var(--ivory));
+  --line: color-mix(in srgb, var(--plum) 20%, transparent);
+  --surface: color-mix(in srgb, var(--wine) 6%, var(--ivory));
+  --accent: var(--wine);
+  --accent-contrast: var(--ivory);
+  --focus: var(--wine);
+
+  /* ----- Typographie ----- */
+  --font-display: 'DM Serif Display', 'Georgia', serif;
+  --font-body: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-body);
+
+  --fs-small: 0.875rem;
+  --fs-body: 1.0625rem;
+  --fs-lead: clamp(1.15rem, 1.6vw, 1.4rem);
+  --fs-h3: clamp(1.4rem, 2.2vw, 1.8rem);
+  --fs-h2: clamp(2.4rem, 5.4vw, 4.4rem);
+  --fs-hero: clamp(4rem, 19vw, 15rem);
+
+  /* ----- Espacement : une seule échelle ----- */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --section-pad: clamp(4.5rem, 10vw, 8.5rem);
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --container: 1240px;
+
+  /* ----- Formes ----- */
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 30px;
+  --radius-blob: 42% 58% 64% 36% / 46% 40% 60% 54%;
+
+  /* ----- Mouvement ----- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.18, 1);
+  --dur-fast: 0.18s;
+  --dur-med: 0.4s;
+
+  --nav-h: 68px;
+}
+
+/* Thème sombre : le papier devient prune, l'encre devient ivoire. */
+[data-theme='dark'] {
+  --bg: var(--plum);
+  --fg: var(--ivory);
+  --muted: color-mix(in srgb, var(--ivory) 74%, var(--plum));
+  --line: color-mix(in srgb, var(--ivory) 22%, transparent);
+  --surface: color-mix(in srgb, var(--wine) 34%, var(--plum));
+  --accent: var(--pink);
+  --accent-contrast: var(--plum);
+  --focus: var(--lemon);
+}
+
+/* ----- Bandes de couleur : chaque section choisit son fond ; les rôles
+   (texte, accent, lignes) se recalculent tout seuls. ----- */
+.band { background: var(--bg); color: var(--fg); }
+
+.band--wine {
+  --bg: var(--wine);
+  --fg: var(--ivory);
+  --muted: color-mix(in srgb, var(--ivory) 80%, var(--wine));
+  --line: color-mix(in srgb, var(--ivory) 28%, transparent);
+  --surface: color-mix(in srgb, var(--plum) 30%, var(--wine));
+  --accent: var(--lemon);
+  --accent-contrast: var(--plum);
+  --focus: var(--lemon);
+}
+
+.band--pink {
+  --bg: var(--pink);
+  --fg: var(--plum);
+  --muted: color-mix(in srgb, var(--plum) 80%, var(--pink));
+  --line: color-mix(in srgb, var(--plum) 26%, transparent);
+  --surface: color-mix(in srgb, var(--ivory) 45%, var(--pink));
+  --accent: var(--wine);
+  --accent-contrast: var(--ivory);
+  --focus: var(--wine);
+}
+
+.band--plum {
+  --bg: var(--plum);
+  --fg: var(--ivory);
+  --muted: color-mix(in srgb, var(--ivory) 76%, var(--plum));
+  --line: color-mix(in srgb, var(--ivory) 24%, transparent);
+  --surface: color-mix(in srgb, var(--wine) 40%, var(--plum));
+  --accent: var(--lemon);
+  --accent-contrast: var(--plum);
+  --focus: var(--lemon);
+}
+
+.band--lemon {
+  --bg: var(--lemon);
+  --fg: var(--plum);
+  --muted: color-mix(in srgb, var(--plum) 82%, var(--lemon));
+  --line: color-mix(in srgb, var(--plum) 30%, transparent);
+  --surface: color-mix(in srgb, var(--ivory) 40%, var(--lemon));
+  --accent: var(--wine);
+  --accent-contrast: var(--ivory);
+  --focus: var(--wine);
+}

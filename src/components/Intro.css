@@ -1,0 +1,194 @@
+/* Introduction : une porte fermée par un nœud papillon, puis la mascotte. */
+.intro {
+  --focus: var(--lemon);
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: hidden;
+  color: var(--ivory);
+  transition: opacity 0.38s ease, background-color 0.6s ease;
+}
+.intro.is-leaving { opacity: 0; pointer-events: none; }
+.intro.is-welcome { background-color: color-mix(in srgb, var(--plum) 58%, transparent); }
+
+/* ---------- Rendu 3D ---------- */
+.intro__canvas { position: absolute; inset: 0; }
+
+/* Rideau uni le temps que Three.js se charge : pas d'écran blanc. */
+.intro__curtain { position: absolute; inset: 0; background: var(--wine); transition: opacity 0.3s ease; }
+.intro.is-ready .intro__curtain { opacity: 0; pointer-events: none; }
+
+/* ---------- Rendu CSS : panneaux ---------- */
+.intro__panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.2%;
+  background-color: var(--wine);
+  will-change: transform;
+  transition: transform 1.25s var(--ease-in-out);
+}
+.intro__panel--left { left: 0; box-shadow: inset -3px 0 0 color-mix(in srgb, var(--plum) 55%, transparent); }
+.intro__panel--right { right: 0; box-shadow: inset 3px 0 0 color-mix(in srgb, var(--plum) 55%, transparent); }
+
+/* Grain fin, même intention que la texture de la version 3D. */
+.intro__panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.intro.is-open .intro__panel--left { transform: translateX(-102%); }
+.intro.is-open .intro__panel--right { transform: translateX(102%); }
+
+/* ---------- Rendu CSS : nœud papillon ---------- */
+.intro__bow {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: clamp(250px, 44vw, 480px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.bow { width: 100%; height: auto; overflow: visible; }
+.bow path, .bow rect { stroke: var(--plum); stroke-width: 3; stroke-linejoin: round; transform-box: fill-box; transform-origin: center; }
+.bow__wing path:first-child { fill: var(--pink); }
+.bow__tail { fill: color-mix(in srgb, var(--pink) 82%, var(--wine)); }
+.bow__fold { fill: none; stroke-opacity: 0.28; }
+.bow__knot { fill: var(--lemon); }
+.bow__wing { transform-box: fill-box; transform-origin: center; }
+
+.intro.is-untying .bow__knot { animation: bowKnot 0.95s ease-in forwards; }
+.intro.is-untying .bow__wing--l { animation: bowWingL 1.4s 0.2s ease-in forwards; }
+.intro.is-untying .bow__wing--r { animation: bowWingR 1.4s 0.2s ease-in forwards; }
+.intro.is-untying .bow__tail--l { animation: bowTailL 1.3s 0.35s ease-in forwards; }
+.intro.is-untying .bow__tail--r { animation: bowTailR 1.3s 0.35s ease-in forwards; }
+
+@keyframes bowKnot {
+  25% { transform: scale(1.12) rotate(-7deg); }
+  100% { transform: scale(0.1) rotate(70deg); opacity: 0; }
+}
+@keyframes bowWingL {
+  20% { transform: rotate(-5deg); }
+  100% { transform: translate(-170px, 280px) rotate(-62deg); opacity: 0; }
+}
+@keyframes bowWingR {
+  20% { transform: rotate(5deg); }
+  100% { transform: translate(170px, 280px) rotate(62deg); opacity: 0; }
+}
+@keyframes bowTailL { 100% { transform: translate(-50px, 340px) rotate(-30deg); opacity: 0; } }
+@keyframes bowTailR { 100% { transform: translate(50px, 340px) rotate(30deg); opacity: 0; } }
+
+/* ---------- Titre sous le nœud ---------- */
+.intro__title {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: end;
+  justify-items: center;
+  gap: 0.9rem;
+  padding: var(--gutter) var(--gutter) clamp(6rem, 19vh, 10rem);
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.intro.is-open .intro__title { opacity: 0; }
+.intro__sig { font-size: clamp(1.5rem, 4.4vw, 3.1rem); }
+.intro__tag {
+  max-width: 46ch;
+  font-size: clamp(0.9rem, 1.7vw, 1.1rem);
+  line-height: 1.5;
+  color: var(--pink);
+  text-wrap: balance;
+}
+
+.intro__skip {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1.5rem, 6vh, 3rem);
+  transform: translateX(-50%);
+  padding: 0.7rem 1.3rem;
+  border: 1px solid color-mix(in srgb, var(--ivory) 55%, transparent);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+}
+.intro__skip:hover { background: var(--lemon); color: var(--plum); border-color: var(--lemon); }
+
+/* ---------- Accueil par la mascotte ---------- */
+.welcome {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: var(--gutter);
+  padding-bottom: 0;
+}
+.welcome__stage {
+  display: grid;
+  grid-template-columns: clamp(170px, 24vw, 320px) minmax(0, 560px);
+  gap: var(--space-md);
+  align-items: end;
+  width: 100%;
+  max-width: 980px;
+  animation: welcomeIn 0.7s var(--ease) both;
+}
+@keyframes welcomeIn { from { opacity: 0; transform: translateY(50px); } }
+
+.welcome__mascot { width: 100%; align-self: end; }
+
+.welcome__bubble {
+  --fg: var(--plum);
+  --muted: color-mix(in srgb, var(--plum) 72%, var(--ivory));
+  --line: color-mix(in srgb, var(--plum) 22%, transparent);
+  --accent: var(--wine);
+  --accent-contrast: var(--ivory);
+  --focus: var(--wine);
+  position: relative;
+  margin-bottom: clamp(3rem, 12vh, 6rem);
+  padding: clamp(1.2rem, 2.4vw, 1.8rem);
+  border-radius: var(--radius-lg);
+  background: var(--ivory);
+  color: var(--plum);
+  cursor: default;
+}
+/* Queue de la bulle, vers la mascotte. */
+.welcome__bubble::before {
+  content: '';
+  position: absolute;
+  left: -13px;
+  bottom: 2.2rem;
+  border: 14px solid transparent;
+  border-left: 0;
+  border-right-color: var(--ivory);
+}
+
+.welcome__name { margin-bottom: 0.5rem; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--wine); }
+.welcome__text { position: relative; font-size: clamp(1.02rem, 1.7vw, 1.2rem); line-height: 1.5; }
+.welcome__ghost { visibility: hidden; }
+.welcome__live { position: absolute; inset: 0; }
+
+.welcome__actions { display: flex; align-items: center; gap: var(--space-sm); margin-top: var(--space-md); }
+.welcome__dots { display: flex; gap: 0.4rem; margin-right: auto; }
+.welcome__dots li { width: 0.6rem; height: 0.6rem; border: 1.5px solid var(--plum); border-radius: 50%; }
+.welcome__dots li.is-current { background: var(--wine); border-color: var(--wine); }
+.welcome__skip { font-size: 0.85rem; font-weight: 500; text-decoration: underline; text-underline-offset: 0.25em; color: var(--muted); }
+.welcome__skip:hover { color: var(--plum); }
+.welcome__choices { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: var(--space-md); }
+.welcome .btn { padding: 0.75rem 1.3rem; font-size: 0.92rem; }
+
+@media (max-width: 700px) {
+  .welcome__stage { grid-template-columns: 1fr; gap: 0; }
+  .welcome__mascot { width: min(46%, 170px); order: 2; margin-top: -0.5rem; }
+  .welcome__bubble { order: 1; margin-bottom: 0; }
+  .welcome__bubble::before { left: 3rem; bottom: -13px; border: 14px solid transparent; border-bottom: 0; border-top-color: var(--ivory); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
+}

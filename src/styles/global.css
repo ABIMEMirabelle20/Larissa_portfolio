@@ -1,0 +1,191 @@
+@import './variables.css';
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-h);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { display: block; max-width: 100%; }
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+input, textarea { font: inherit; color: inherit; }
+
+::selection { background: var(--lemon); color: var(--plum); }
+
+/* Focus clavier : toujours visible, couleur adaptée à chaque fond. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Lien d'évitement (clavier et lecteurs d'écran). */
+.skip-link {
+  position: fixed;
+  left: var(--space-sm);
+  top: -4rem;
+  z-index: 2000;
+  padding: 0.7rem 1.1rem;
+  background: var(--lemon);
+  color: var(--plum);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition: top var(--dur-fast) var(--ease);
+}
+.skip-link:focus { top: var(--space-sm); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Mise en page ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section { padding-block: var(--section-pad); position: relative; overflow-x: clip; }
+
+/* ---------- Typographie ---------- */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+}
+
+h2 { font-size: var(--fs-h2); max-width: 16ch; text-wrap: balance; }
+h3 { font-size: var(--fs-h3); line-height: 1.15; }
+
+p { text-wrap: pretty; }
+
+/* Petit libellé de section : mono, majuscules, précédé d'un carré citron. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.eyebrow::before {
+  content: '';
+  width: 0.7rem; height: 0.7rem;
+  background: var(--lemon);
+  border: 1px solid var(--plum);
+  border-radius: 2px;
+}
+
+.lead { font-size: var(--fs-lead); line-height: 1.55; color: var(--fg); max-width: 56ch; }
+
+/* Surlignage citron "au marqueur" : se trace une fois quand la section
+   entre à l'écran (classe .is-in posée par useInView). Le texte reste
+   prune sur citron : lisible sur ivoire comme sur prune. */
+.mark {
+  color: var(--plum);
+  background: linear-gradient(var(--lemon), var(--lemon)) no-repeat left center / 0% 100%;
+  padding: 0.05em 0.2em;
+  margin-inline: -0.2em;
+  transition: background-size 0.8s var(--ease) 0.25s;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.is-in .mark, .mark.is-in { background-size: 100% 100%; }
+
+/* ---------- Signature : "Mirabelle ABIME." ----------
+   Un serif expressif pour le prénom, un sans-serif contemporain en capitales
+   pour le nom, et un point citron qui sert de signature. */
+.sig { display: inline-flex; align-items: baseline; gap: 0.32em; line-height: 1; white-space: nowrap; }
+.sig__first { font-family: var(--font-display); font-size: 1.35em; letter-spacing: -0.01em; }
+.sig__last { font-family: var(--font-body); font-weight: 700; font-size: 0.82em; letter-spacing: 0.14em; }
+.sig__dot { align-self: flex-end; width: 0.32em; height: 0.32em; margin-left: -0.12em; border-radius: 50%; background: var(--lemon); border: 1.5px solid var(--plum); }
+
+/* ---------- Boutons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1.7rem;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.1;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.btn--solid { background: var(--accent); color: var(--accent-contrast); }
+.btn--solid:hover { background: transparent; color: var(--accent); }
+.btn--line { border-color: var(--fg); color: var(--fg); background: transparent; }
+.btn--line:hover { background: var(--fg); color: var(--bg); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Bouton avec pastille-flèche : la flèche glisse vers la droite au survol. */
+.btn-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.4rem 0.4rem 0.4rem 1.5rem;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 700;
+  text-decoration: none;
+  line-height: 1.1;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.btn-arrow__icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--lemon);
+  color: var(--plum);
+  overflow: hidden;
+}
+.btn-arrow__icon svg { transition: transform 0.35s var(--ease); }
+.btn-arrow:hover .btn-arrow__icon svg { transform: translateX(4px); }
+.btn-arrow--small { padding: 0.25rem 0.25rem 0.25rem 1.1rem; gap: 0.6rem; font-size: 0.92rem; }
+.btn-arrow--small .btn-arrow__icon { width: 2rem; height: 2rem; }
+.btn-arrow--small .btn-arrow__icon svg { width: 15px; height: 15px; }
+
+/* ---------- Mouvement réduit ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .mark { background-size: 100% 100%; }
+}

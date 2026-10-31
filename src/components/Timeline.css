@@ -1,0 +1,53 @@
+.journey__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+}
+.journey__head { position: sticky; top: calc(var(--nav-h) + var(--space-md)); }
+.journey__head .lead { margin-top: var(--space-md); color: var(--muted); }
+
+/* ---------- Étapes ---------- */
+.journey__steps { border-bottom: 1px solid var(--line); }
+.step {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 9rem) minmax(0, 1fr);
+  gap: var(--space-md);
+  padding-block: var(--space-md);
+  border-top: 1px solid var(--line);
+}
+.step__year { font-family: var(--font-display); font-size: clamp(1.4rem, 2.4vw, 1.9rem); line-height: 1.1; color: var(--accent); }
+.step__place { margin-top: 0.3rem; font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.step__text { margin-top: var(--space-xs); max-width: 54ch; }
+
+/* ---------- Formation continue ---------- */
+.journey__learning { margin-top: clamp(3.5rem, 8vw, 6.5rem); }
+
+.journey__numbers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); }
+.journey__number {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  padding: var(--space-md);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+}
+.journey__number dd { margin: 0; font-family: var(--font-display); font-size: clamp(2.4rem, 6vw, 4.6rem); line-height: 1; }
+.journey__number dt { font-size: 0.95rem; color: var(--muted); }
+
+.journey__note { margin-top: var(--space-md); max-width: 64ch; color: var(--muted); }
+
+.journey__highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); margin-top: var(--space-lg); }
+.journey__highlights li { padding-top: var(--space-sm); border-top: 2px solid var(--fg); }
+.journey__highlights h3 { font-size: 1.3rem; }
+.journey__highlights p { margin-top: 0.5rem; color: var(--muted); }
+
+@media (max-width: 960px) {
+  .journey__grid { grid-template-columns: 1fr; }
+  .journey__head { position: static; }
+  .journey__numbers, .journey__highlights { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .step { grid-template-columns: 1fr; gap: 0.3rem; }
+}

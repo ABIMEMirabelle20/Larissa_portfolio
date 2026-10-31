@@ -1,0 +1,28 @@
+.mascot { display: block; width: 100%; height: auto; overflow: visible; }
+.mascot--image { object-fit: contain; }
+
+/* Clignement des yeux, toutes les quelques secondes. */
+.mascot__eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mascotBlink 5s infinite;
+}
+@keyframes mascotBlink {
+  0%, 93%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+/* Bouche : sourire au repos, bouche ouverte qui bat quand elle parle. */
+.mascot__mouth { display: none; transform-box: fill-box; transform-origin: center; }
+.mascot.is-talking .mascot__smile { display: none; }
+.mascot.is-talking .mascot__mouth { display: block; animation: mascotTalk 0.34s ease-in-out infinite alternate; }
+@keyframes mascotTalk { from { transform: scaleY(0.45); } to { transform: scaleY(1); } }
+
+/* Bras : salut de la main. */
+.mascot__arm { transform-box: view-box; transform-origin: 196px 262px; }
+.mascot.is-waving .mascot__arm { animation: mascotWave 1.1s ease-in-out infinite alternate; }
+@keyframes mascotWave { from { transform: rotate(-9deg); } to { transform: rotate(13deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot__eyes, .mascot.is-talking .mascot__mouth, .mascot.is-waving .mascot__arm { animation: none; }
+}
