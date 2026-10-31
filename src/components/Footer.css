@@ -1,79 +1,147 @@
+/* Pied de page : la dernière signature du site.
+   Fond prune, nom en très grand serif, nœud papillon qui se balance. */
 .footer {
   position: relative;
-  z-index: 1;
-  --wave-h: clamp(48px, 8vw, 96px);
-  padding-block: var(--space-xl) var(--space-lg);
-}
-
-/* ---------- Vagues : trois nappes aux couleurs de la palette ---------- */
-.footer__waves {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 100%;
-  height: var(--wave-h);
+  padding-top: clamp(2.5rem, 6vw, 5rem);
+  padding-bottom: var(--space-md);
   overflow: hidden;
-  pointer-events: none;
 }
-.footer__wave { position: absolute; inset: 0; animation: footerBob 6s ease-in-out infinite; }
-.footer__wave svg {
-  position: absolute;
-  bottom: -1px; left: 0;
-  width: 200%; max-width: none; height: 100%;
-  animation: footerDrift 24s linear infinite;
+
+/* Filet fin en haut, avec un court trait citron posé dessus. */
+.footer__rule { height: 1px; background: var(--line); }
+.footer__rule::before {
+  content: '';
+  display: block;
+  width: clamp(3rem, 8vw, 6rem);
+  height: 3px;
+  margin-top: -1px;
+  background: var(--lemon);
 }
-.footer__wave--1 { animation-duration: 7s; }
-.footer__wave--1 svg { fill: var(--pink); opacity: 0.3; animation-duration: 38s; }
-.footer__wave--2 { animation-duration: 5s; animation-delay: -2s; }
-.footer__wave--2 svg { fill: var(--lemon); opacity: 0.16; animation-duration: 26s; animation-direction: reverse; }
-/* Premier plan : exactement la couleur du pied de page, donc sans couture. */
-.footer__wave--3 { animation-duration: 8s; animation-delay: -4s; }
-.footer__wave--3 svg { fill: var(--plum); opacity: 1; animation-duration: 18s; }
 
-@keyframes footerDrift { to { transform: translateX(-50%); } }
-@keyframes footerBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+/* ---------- Signature ---------- */
+.footer__stage { position: relative; padding-top: clamp(1.5rem, 4vw, 3.5rem); }
 
-/* ---------- Contenu ---------- */
-.footer__top-row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-md); }
-.footer__name { font-family: var(--font-display); font-size: clamp(2.4rem, 7vw, 5rem); line-height: 1; letter-spacing: -0.03em; }
-.footer__tagline { margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-
-.footer__socials { display: flex; gap: 0.7rem; padding-bottom: 0.4rem; }
-.footer__social {
+.footer__name {
   position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 14.6vw, 13rem);
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+  color: var(--ivory);
+}
+.footer__line { display: block; white-space: nowrap; }
+/* Deuxième ligne décalée : la composition est volontairement asymétrique. */
+.footer__line--second { padding-left: 17%; color: var(--pink); }
+
+/* Chaque lettre se soulève et change de couleur au survol ; ses voisines
+   la suivent un peu. */
+.footer__letter {
+  display: inline-block;
+  cursor: default;
+  transition: transform 0.5s var(--ease), color 0.25s var(--ease);
+}
+.footer__letter:hover { color: var(--lemon); transform: translateY(-0.08em) rotate(-3deg); }
+.footer__letter:hover + .footer__letter,
+.footer__letter:has(+ .footer__letter:hover) { transform: translateY(-0.035em); }
+
+/* Point final : le même point citron que la signature de la navigation. */
+.footer__dot {
+  display: inline-block;
+  width: 0.13em;
+  height: 0.13em;
+  margin-left: 0.05em;
+  border-radius: 50%;
+  background: var(--lemon);
+}
+
+/* ---------- Nœud papillon : dans l'espace libre à droite de "Mirabelle" ---------- */
+.footer__bow {
+  position: absolute;
+  top: 8%;
+  right: 0.5%;
+  z-index: 0;
+  width: clamp(96px, 24vw, 330px);
+  height: auto;
+  overflow: visible;
+  transform: rotate(-8deg);
+  animation: footerRock 7s ease-in-out infinite alternate;
+}
+.footer__bow path, .footer__bow rect { stroke: var(--plum); stroke-width: 3; stroke-linejoin: round; }
+.footer__bow-wing { fill: var(--pink); }
+.footer__bow-tail { fill: color-mix(in srgb, var(--pink) 78%, var(--wine)); }
+.footer__bow-knot { fill: var(--lemon); transform-box: fill-box; transform-origin: center; transition: transform 0.5s var(--ease); }
+.footer__bow-wing--loose { transform-box: fill-box; transform-origin: 0% 55%; animation: footerFlutter 4.5s ease-in-out infinite alternate; }
+
+.footer__stage:has(.footer__letter:hover) .footer__bow-knot { transform: scale(1.14) rotate(8deg); }
+
+@keyframes footerRock { from { transform: rotate(-10deg); } to { transform: rotate(-3deg); } }
+@keyframes footerFlutter { from { transform: rotate(4deg) translateX(4px); } to { transform: rotate(13deg) translateX(8px); } }
+
+/* ---------- Réseaux : dans le vide laissé sous "Mirabelle" ---------- */
+.footer__socials {
+  position: absolute;
+  left: 0;
+  bottom: 0.4rem;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 3rem);
+  gap: 0.6rem;
+}
+.footer__social {
   display: grid;
   place-items: center;
-  width: 3rem; height: 3rem;
+  width: 3rem;
+  height: 3rem;
   border: 1px solid var(--line);
   border-radius: 50%;
-  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform 0.4s var(--ease);
 }
-.footer__social:hover { background: var(--lemon); color: var(--plum); border-color: var(--lemon); }
+.footer__social:hover, .footer__social:focus-visible { background: var(--lemon); color: var(--plum); border-color: var(--lemon); transform: rotate(-8deg) scale(1.08); }
 
-/* Ondulation au survol : un anneau grandit puis s'efface, comme une goutte. */
-.footer__social::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px solid var(--lemon);
-  opacity: 0;
-  pointer-events: none;
-}
-@media (hover: hover) and (pointer: fine) {
-  .footer__social:hover::after, .footer__social:focus-visible::after { animation: footerRipple 0.9s ease-out; }
-}
-@keyframes footerRipple { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2.1); opacity: 0; } }
-
+/* ---------- Bas de page : filet fin, copyright, actions ---------- */
 .footer__bottom {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm);
-  margin-top: var(--space-lg); padding-top: var(--space-md);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm) var(--space-md);
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: var(--space-md);
   border-top: 1px solid var(--line);
-  font-size: var(--fs-small); color: var(--muted);
+  font-size: var(--fs-small);
+  color: var(--muted);
 }
 .footer__actions { display: flex; flex-wrap: wrap; gap: var(--space-md); }
-.footer__action { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); text-decoration: underline; text-underline-offset: 0.3em; }
-.footer__action:hover { color: var(--lemon); }
+
+.footer__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-block: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg);
+  /* Soulignement citron qui se trace de gauche à droite. */
+  background: linear-gradient(var(--lemon), var(--lemon)) no-repeat 0 100% / 0% 2px;
+  transition: background-size 0.4s var(--ease), color var(--dur-fast) var(--ease);
+}
+.footer__action:hover, .footer__action:focus-visible { background-size: 100% 2px; color: var(--lemon); }
+.footer__action svg { transition: transform 0.45s var(--ease); }
+.footer__action--top:hover svg, .footer__action--top:focus-visible svg { transform: translateY(-3px); }
+.footer__action--replay:hover svg, .footer__action--replay:focus-visible svg { transform: rotate(-200deg); }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 760px) {
+  .footer__line--second { padding-left: 12%; }
+  .footer__bow { top: 5%; width: 27vw; }
+  /* Pas de place sous "Mirabelle" : les réseaux passent sous la signature. */
+  .footer__socials { position: static; display: flex; margin-top: var(--space-md); }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .footer__wave, .footer__wave svg, .footer__social::after { animation: none; }
+  .footer__bow, .footer__bow-wing--loose { animation: none; }
+  .footer__letter:hover, .footer__social:hover { transform: none; }
 }

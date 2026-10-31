@@ -35,31 +35,47 @@ const SOCIALS = [
   },
 ];
 
-// Trois nappes d'eau décoratives : un motif de vague répété deux fois, qui
-// glisse horizontalement en boucle sans coupure visible.
-const WAVE_PATH = 'M0 60 Q300 0 600 60 T1200 60 T1800 60 T2400 60 V120 H0 Z';
+// Chaque lettre est un élément à part : elle réagit seule au survol.
+const letters = (word) =>
+  [...word].map((char, index) => (
+    <span key={index} className="footer__letter">
+      {char}
+    </span>
+  ));
+
+// Nœud papillon abstrait : le dernier nœud du site. L'aile droite s'est
+// légèrement détachée, comme dans l'introduction quand il se défait.
+function BowTie() {
+  return (
+    <svg className="footer__bow" viewBox="0 0 300 200" aria-hidden="true" focusable="false">
+      <path className="footer__bow-tail" d="M138 122L108 190l22-7 14 12 6-73Z" />
+      <path className="footer__bow-tail" d="M162 122l30 68-22-7-14 12-6-73Z" />
+      <path className="footer__bow-wing" d="M124 98C88 54 42 42 8 60v76c34 18 78 8 116-39Z" />
+      <path className="footer__bow-wing footer__bow-wing--loose" d="M180 98c36-44 82-56 116-38v76c-34 18-78 8-116-39Z" />
+      <rect className="footer__bow-knot" x="122" y="70" width="56" height="56" rx="22" />
+    </svg>
+  );
+}
 
 export default function Footer({ onReplayIntro }) {
   const { t } = useLanguage();
 
   return (
     <footer className="footer band band--plum">
-      <div className="footer__waves" aria-hidden="true">
-        {[1, 2, 3].map((n) => (
-          <div key={n} className={`footer__wave footer__wave--${n}`}>
-            <svg viewBox="0 0 2400 120" preserveAspectRatio="none" focusable="false">
-              <path d={WAVE_PATH} />
-            </svg>
-          </div>
-        ))}
-      </div>
-
       <div className="container footer__inner">
-        <div className="footer__top-row">
-          <div>
-            <p className="footer__name">Mirabelle Abime</p>
-            <p className="footer__tagline">{t.footer.tagline}</p>
-          </div>
+        <div className="footer__rule" aria-hidden="true" />
+
+        <div className="footer__stage">
+          <p className="footer__name">
+            <span className="visually-hidden">Mirabelle ABIME</span>
+            <span className="footer__line footer__line--first" aria-hidden="true">
+              {letters('Mirabelle')}
+            </span>
+            <span className="footer__line footer__line--second" aria-hidden="true">
+              {letters('ABIME')}
+              <span className="footer__dot" />
+            </span>
+          </p>
 
           <ul className="footer__socials">
             {SOCIALS.map((s) => (
@@ -72,20 +88,30 @@ export default function Footer({ onReplayIntro }) {
               </li>
             ))}
           </ul>
+
+          <BowTie />
         </div>
 
         <div className="footer__bottom">
-          <p>
+          <p className="footer__copy">
             © {new Date().getFullYear()} Mirabelle ABIME. {t.footer.rights}.
           </p>
+
           <div className="footer__actions">
             {onReplayIntro && canReplayIntro() && (
-              <button type="button" className="footer__action" onClick={onReplayIntro}>
-                {t.footer.replayIntro}
+              <button type="button" className="footer__action footer__action--replay" onClick={onReplayIntro}>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M3 12a9 9 0 1 0 3-6.7" />
+                  <path d="M3 4v5h5" />
+                </svg>
+                <span>{t.footer.replayIntro}</span>
               </button>
             )}
-            <button type="button" className="footer__action" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              {t.footer.top} <span aria-hidden="true">↑</span>
+            <button type="button" className="footer__action footer__action--top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <span>{t.footer.top}</span>
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 19V5M5 12l7-7 7 7" />
+              </svg>
             </button>
           </div>
         </div>
