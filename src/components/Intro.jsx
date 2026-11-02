@@ -6,19 +6,7 @@ import Welcome from './intro/Welcome';
 import Signature from './Signature';
 import './Intro.css';
 
-// Séquence : une porte fermée par un nœud papillon.
-//   1. closed   : la porte est fermée, le nœud est en place
-//   2. untying  : le nœud se défait
-//   3. opening  : les deux panneaux s'ouvrent
-//   4. welcome  : la mascotte accueille le visiteur
-//   5. leaving  : fondu de sortie (quand on passe l'intro)
-//
-// Deux rendus, choisis automatiquement :
-//  - "three" : panneaux et nœud en 3D (Three.js), sur ordinateur avec WebGL.
-//  - "css"   : mêmes éléments en CSS/SVG. Mobile, tablette, pas de WebGL, ou
-//              si la 3D échoue ou met trop de temps (repli automatique).
-// Pas d'intro si la personne préfère réduire les animations, si elle l'a déjà
-// vue pendant la visite, ou si elle arrive par un lien direct vers une section.
+
 
 const SEEN_KEY = 'portfolio-intro-seen';
 const HOLD_MS = 800;
